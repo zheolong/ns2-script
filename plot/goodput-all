@@ -1,0 +1,20 @@
+data_file1 = '../grpid/autotest_result.txt'
+data_file2 = '../red/autotest_result.txt'
+data_file3 = '../pi/autotest_result.txt'
+data_file4 = '../rem/autotest_result.txt'
+data_file5 = '../avq/autotest_result.txt'
+
+#set xrange [0:10020]
+#set yrange [0:600]
+
+plot data_file1 using 1:2 t "grpid" with linespoints lt 3 lc 1,\
+	 data_file2 using 1:2 t "red" with linespoints lt 3 lc 2,\
+	 data_file3 using 1:2 t "pi" with linespoints lt 3 lc 3,\
+	 data_file4 using 1:2 t "rem" with lines lt 3 lc 4,\
+	 data_file5 using 1:2 t "avq" with linespoints lt 3 lc 5
+
+
+unset multiplot
+reset
+
+pause -1
