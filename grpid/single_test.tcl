@@ -56,7 +56,7 @@ $grpidq trace curq_
 $grpidq attach $tchan_
 $grpidq set mean_pktsize_ 500
 $grpidq set w_ 1170
-$grpidq set qref_ 300                                ;#期望队列长度
+$grpidq set qref_ 300                              ;#期望队列长度
 $grpidq set bytes_ false 
 $grpidq set queue_in_bytes_ false 
 

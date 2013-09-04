@@ -55,10 +55,10 @@ set tchan_ [open all.q w]
 $redq trace curq_
 $redq attach $tchan_
 
-$redq set thresh_ 200 
-$redq set maxthresh_ 400
-$redq set q_weight_ 0.1
-$redq set linterm_ 10
+$redq set thresh_ 100 
+$redq set maxthresh_ 300
+#$redq set q_weight_ 0.03
+#$redq set linterm_ 10
 $redq set bytes_ false 
 $redq set queue_in_bytes_ false 
 $redq set mean_pktsize_ 500
