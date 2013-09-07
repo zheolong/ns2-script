@@ -34,11 +34,12 @@ do
  #第三列
  awk -f awks/measure-loss-rate.awk out.tr >> $f # 得到loss-rate
  echo -n '\t' >> $f
- #第三列
- awk -f awks/measure-delay-link.awk out.tr >> $f # 得到loss-rate
+ #第四列
+ awk -f awks/measure-delay-link.awk out.tr >> $f # 得到delay-link
+ echo -n '\t' >> $f
+ #第五列
+ awk -f awks/measure-jitter.awk out.tr >> $f # 得到jitter
  echo -n '\t' >> $f
  i=$i+$con_num_inc
  echo -n '\n' >> $f
 done 
-
-

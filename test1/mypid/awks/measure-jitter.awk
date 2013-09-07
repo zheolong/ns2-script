@@ -32,7 +32,7 @@ BEGIN {
  
 #Record the receiving time for CBR (flow_id=2)
    #if ( flow_id == 2 && action != "d" ) {
-   if ( flow_id == 235 && action != "d" ) {
+   if ( action != "d" ) {
       if ( action == "r" ) {
              end_time[packet_id] = time;
       }
