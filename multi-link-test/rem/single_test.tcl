@@ -1,4 +1,4 @@
-#script illustrating  Vq usage
+#script illustrating  REM usage
 #Senders are TCP-SACK senders, and receivers are TCP-SACK sinks
 #注意，本脚本执行的第一个参数是源端和目的端节点的数量,
 #第二个参数为时间，
@@ -9,7 +9,7 @@ set ns [new Simulator]
 # turn on ns and nam tracing
 set f [open out.tr w]
 $ns trace-all $f
-$ns namtrace-all [open out.nam w]
+# $ns namtrace-all [open out.nam w]
 
 #------------------------------------------------------------------
 set start_time 1.0              ;#开始时间
@@ -63,7 +63,7 @@ set tchan_ [open all.q w]
 $remq trace curq_
 $remq attach $tchan_
 
-#Configure Vq queue parameters here
+#Configure REM queue parameters here
 for {set i 0} {$i < [expr ($router_num - 1)]} {incr i} {
 	set remq [[$ns link $n($i) $n([expr ($i + 1)])] queue]
 $remq set gamma_ 0.001
@@ -85,7 +85,7 @@ for {set i 1} {$i < [expr ($router_num - 1)]} {incr i} {
 }
 
 #set up queue monitor, sample every 0.5 seconds
-set qfile [open "test-vq-qsize.out" w]
+set qfile [open "test-rem-qsize.out" w]
 set qm [$ns monitor-queue $n(1) $n(2) $qfile 0.5]
 [$ns link $n(1) $n(2)] queue-sample-timeout
 
@@ -121,7 +121,7 @@ proc finish {} {
     $ns flush-trace
     close $qfile
     #puts "running nam..."
-    exec nam out.nam &
+    # exec nam out.nam &
     #    exec xgraph *.tr -geometry 800x400 &
     exit 0
 }

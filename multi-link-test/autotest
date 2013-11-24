@@ -1,0 +1,31 @@
+#!/bin/zsh
+#运行六个算法中的autotest
+#参数:
+#1. 重复次数
+#2. 最少连接数
+#3. 连接数增加数
+#4. 单次时间
+
+
+cd avq/
+./autotest $1 $2 $3 $4
+cd ..
+cd grpid/
+./autotest $1 $2 $3 $4
+cd ..
+cd mypid/
+./autotest $1 $2 $3 $4
+cd ..
+cd pi/
+./autotest $1 $2 $3 $4
+cd ..
+cd red/
+./autotest $1 $2 $3 $4
+cd ..
+cd rem/
+./autotest $1 $2 $3 $4
+cd ..
+#画图
+cd plot
+gnuplot *.plt
+

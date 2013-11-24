@@ -1,7 +1,7 @@
 #!/usr/bin/gnuplot
 set terminal postscript eps enhanced color 
 output_base_dir='/root/AQM/master-paper/figure/chapter6/'
-set output output_base_dir.'multi-link-multi-link-queuelen-all.eps'
+set output output_base_dir.'multi-link-queuelen-all.eps'
 
 data_file1 = '../grpid/all.q'
 data_file2 = '../mypid/all.q'

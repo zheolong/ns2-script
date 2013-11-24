@@ -9,7 +9,7 @@ set ns [new Simulator]
 # turn on ns and nam tracing
 set f [open out.tr w]
 $ns trace-all $f
-$ns namtrace-all [open out.nam w]
+# $ns namtrace-all [open out.nam w]
 
 
 
@@ -114,7 +114,7 @@ proc finish {} {
     $ns flush-trace
     close $qfile
     #puts "running nam..."
-    exec nam out.nam &
+    #exec nam out.nam &
     #    exec xgraph *.tr -geometry 800x400 &
     exit 0
 }

@@ -4,7 +4,7 @@ output_base_dir='/root/AQM/master-paper/figure/chapter6/'
 set output output_base_dir.'loss-rate-all.eps'
 
 data_file1 = '../grpid/autotest_result.txt'
-data_file2 = '../pid/autotest_result.txt'
+data_file2 = '../mypid/autotest_result.txt'
 data_file3 = '../pi/autotest_result.txt'
 data_file4 = '../rem/autotest_result.txt'
 data_file5 = '../avq/autotest_result.txt'

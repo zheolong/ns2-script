@@ -9,7 +9,7 @@ set ns [new Simulator]
 # turn on ns and nam tracing
 set f [open out.tr w]
 $ns trace-all $f
-$ns namtrace-all [open out.nam w]
+# $ns namtrace-all [open out.nam w]
 
 #------------------------------------------------------------------
 set start_time 1.0              ;#开始时间
@@ -53,8 +53,8 @@ for {set i [expr ( $nodenum + $subnode_num)] } {$i < [expr ( $nodenum + 2 * $sub
 
 #Bottle neck link between between n1 and n2
 for {set i 0} {$i < [expr ($router_num - 1)]} {incr i} {
-	$ns simplex-link $n($i) $n([expr ($i + 1)]) 10Mbps 300ms Vq
-	$ns simplex-link $n([expr ($i + 1)]) $n($i) 10Mbps 300ms Vq    
+	$ns simplex-link $n($i) $n([expr ($i + 1)]) 10Mbps 60ms Vq
+	$ns simplex-link $n([expr ($i + 1)]) $n($i) 10Mbps 60ms Vq    
 }
 
 set vqq [[$ns link $n(1) $n(2)] queue]
@@ -112,7 +112,7 @@ proc finish {} {
     $ns flush-trace
     close $qfile
     #puts "running nam..."
-    exec nam out.nam &
+    # exec nam out.nam &
     #    exec xgraph *.tr -geometry 800x400 &
     exit 0
 }

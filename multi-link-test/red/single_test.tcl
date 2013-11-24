@@ -1,4 +1,4 @@
-#script illustrating  red usage
+#script illustrating  RED usage
 #Senders are TCP-SACK senders, and receivers are TCP-SACK sinks
 #注意，本脚本执行的第一个参数是源端和目的端节点的数量,
 #第二个参数为时间，
@@ -9,9 +9,7 @@ set ns [new Simulator]
 # turn on ns and nam tracing
 set f [open out.tr w]
 $ns trace-all $f
-$ns namtrace-all [open out.nam w]
-
-
+# $ns namtrace-all [open out.nam w]
 
 #------------------------------------------------------------------
 set start_time 1.0              ;#开始时间
@@ -20,41 +18,54 @@ set finish_time [lindex $argv 1]            ;#结束时间
 
 #set the no of TCP flows here
 #$argv为传入的参数，即节点数
-set nodenum [lindex $argv 0]               ;#60个发送结点，60个接受结点
+set nodenum [lindex $argv 0]
+set router_num 6 
+set subnode_num [expr ([lindex $argv 0] / 20)] 
 
 # create the nodes
-#Then create the 2 back-bone routers
-set n1 [$ns node]
-set n2 [$ns node]  
+#Then create the 6 back-bone routers
+for {set i 0} {$i < $router_num} {incr i} {
+	set n($i) [$ns node]
+}
 
 #First create TCP senders and receivers
 
-for {set i 0} {$i < $nodenum} {incr i} {
-    
+for {set i 0} {$i < [expr ( $nodenum + 2 * $subnode_num)]} {incr i} {
     set s($i) [$ns node]
     set r($i) [$ns node]           ;#建立结点
 }
 
-
 # create the links 
-#betwwen the senders and n1, receivers and n2
 for {set i 0} {$i < $nodenum} {incr i} {
+    $ns duplex-link $s($i) $n(0) 10Mb 20ms DropTail
+    $ns duplex-link $r($i) $n(5) 10Mb 20ms DropTail           ;#发送和接收结点与瓶颈结点连接时的设置
+}
 
-    $ns duplex-link $s($i) $n1 10Mb 20ms DropTail
-    $ns duplex-link $r($i) $n2 10Mb 20ms DropTail           ;#发送和接收结点与瓶颈结点连接时的设置
+for {set i $nodenum} {$i < [expr ( $nodenum + $subnode_num)]} {incr i} {
+    $ns duplex-link $s($i) $n(1) 10Mb 20ms DropTail
+    $ns duplex-link $r($i) $n(2) 10Mb 20ms DropTail           ;#发送和接收结点与瓶颈结点连接时的设置
+}
 
+for {set i [expr ( $nodenum + $subnode_num)] } {$i < [expr ( $nodenum + 2 * $subnode_num)]} {incr i} {
+    $ns duplex-link $s($i) $n(3) 10Mb 20ms DropTail
+    $ns duplex-link $r($i) $n(4) 10Mb 20ms DropTail           ;#发送和接收结点与瓶颈结点连接时的设置
 }
 
 #Bottle neck link between between n1 and n2
-$ns simplex-link $n1 $n2 10Mbps 60ms RED             ;#链路瓶颈的设置及处理算法，red既是模糊自适应red算法
-$ns simplex-link $n2 $n1 10Mbps 60ms RED    
+for {set i 0} {$i < [expr ($router_num - 1)]} {incr i} {
+	$ns simplex-link $n($i) $n([expr ($i + 1)]) 10Mbps 60ms RED 
+	$ns simplex-link $n([expr ($i + 1)]) $n($i) 10Mbps 60ms RED   
+}
 
-#Configure red queue parameters here
-set redq [[$ns link $n1 $n2] queue]
+
+set redq [[$ns link $n(1) $n(2)] queue]
 set tchan_ [open all.q w]
 $redq trace curq_
 $redq attach $tchan_
 
+#Configure RED queue parameters here
+for {set i 0} {$i < [expr ($router_num - 1)]} {incr i} {
+	set redq [[$ns link $n($i) $n([expr ($i + 1)])] queue]
 $redq set thresh_ 100 
 $redq set maxthresh_ 300
 $redq set q_weight_ 0.0002 
@@ -64,22 +75,23 @@ $redq set queue_in_bytes_ false
 $redq set mean_pktsize_ 500
 $redq set adaptive_ 0
 $redq set gentle_ false 
+}
 
 #set the queue-limit between n1 and n2
-$ns queue-limit $n1 $n2 600                     ;#瓶颈链路缓冲区大小 50个数据包
+for {set i 1} {$i < [expr ($router_num - 1)]} {incr i} {
+	$ns queue-limit $n($i) $n([expr ($i + 1)]) 600                     ;#瓶颈链路缓冲区大小 50个数据包
+}
 
 #set up queue monitor, sample every 0.5 seconds
 set qfile [open "test-red-qsize.out" w]
-set qm [$ns monitor-queue $n1 $n2 $qfile 0.5]
-[$ns link $n1 $n2] queue-sample-timeout
+set qm [$ns monitor-queue $n(1) $n(2) $qfile 0.5]
+[$ns link $n(1) $n(2)] queue-sample-timeout
 
 #create the random number generator
 set rng [new RNG]
 
-
 # create TCP agents
-for {set i 0} {$i < $nodenum} {incr i} {
-
+for {set i 0} {$i < [expr ( $nodenum + 2 * $subnode_num)]} {incr i} {
     set tcp($i) [new Agent/TCP/Sack1]
     $tcp($i) set fid_ [expr ($i + 1)]
     set sink($i) [new Agent/TCPSink/Sack1/DelAck]
@@ -100,16 +112,14 @@ for {set i 0} {$i < $nodenum} {incr i} {
     #$ns at $start_time "$p($i) start"
 }
 
-
 $ns at $finish_time "finish"
-
 
 proc finish {} {
     global ns sink nodenum  qfile
     $ns flush-trace
     close $qfile
     #puts "running nam..."
-    exec nam out.nam &
+    # exec nam out.nam &
     #    exec xgraph *.tr -geometry 800x400 &
     exit 0
 }
