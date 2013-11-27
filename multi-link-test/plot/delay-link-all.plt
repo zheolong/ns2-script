@@ -15,12 +15,12 @@ set ytics font ",10"
 #set xrange [0:10020]
 #set yrange [0:600]
 
-plot data_file1 using 1:2 t "grpid" with linespoints lc 1 lw 5,\
-	 data_file2 using 1:2 t "red" with linespoints lc 2 lw 5,\
-	 data_file3 using 1:2 t "pi" with linespoints lc 3 lw 5,\
-	 data_file4 using 1:2 t "rem" with lines lc 4 lw 5,\
-	 data_file5 using 1:2 t "avq" with linespoints lc 5 lw 5,\
-	 data_file6 using 1:2 t "red" with linespoints lc 5 lw 5
+plot data_file1 using 1:4 t "grpid" with linespoints lc 1 lw 5,\
+	 data_file2 using 1:4 t "pid" with linespoints lc 2 lw 5,\
+	 data_file3 using 1:4 t "pi" with linespoints lc 3 lw 5,\
+	 data_file4 using 1:4 t "rem" with lines lc 4 lw 5,\
+	 data_file5 using 1:4 t "avq" with linespoints lc 5 lw 5,\
+	 data_file6 using 1:4 t "red" with linespoints lc 5 lw 5
 
 unset multiplot
 
