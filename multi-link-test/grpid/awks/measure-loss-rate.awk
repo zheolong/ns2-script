@@ -18,10 +18,12 @@ BEGIN {
    dst = $10;
    seq_no = $11;
    packet_id = $12;
-        if (from==0 && to==1 && action == "+")
+        #if (from==0 && to==1 && action == "+")
+        if (action == "+")
                 numFs++;
         #if (flow_id==2 && action == "d")
         #        fsDrops++;
+        #if (from==0 && to==1 && action == "d")
         if (action == "d")
                 fsDrops++;
 }
