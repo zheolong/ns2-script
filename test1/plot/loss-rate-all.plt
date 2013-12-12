@@ -12,6 +12,7 @@ data_file4 = '../rem/autotest_result.txt'
 data_file5 = '../avq/autotest_result.txt'
 data_file6 = '../red/autotest_result.txt'
 
+set key right bottom
 set xlabel "连接数(个)"
 set ylabel "丢包率(%)"
 #set xrange [0:10020]
