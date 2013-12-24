@@ -105,9 +105,54 @@ for {set i 0} {$i < $nodenum} {incr i} {
     #$ns at $start_time "$p($i) start"
 }
 
+#下面所注释的代码块可以用来生成FTP流和HTTP流
+
+# create TCP agents
+#for {set i 0} {$i < $nodenum/2} {incr i} {
+#
+#    set tcp($i) [new Agent/TCP/Sack1]
+#    $tcp($i) set fid_ [expr ($i + 1)]
+#    set sink($i) [new Agent/TCPSink/Sack1/DelAck]
+#    $ns attach-agent $s($i) $tcp($i)
+#    $ns attach-agent $r($i) $sink($i)
+#    $ns connect $tcp($i) $sink($i)
+#    set ftp($i) [new Application/FTP]
+#    $ftp($i) attach-agent $tcp($i)
+#    #set p($i) [new Application/Traffic/Pareto]
+#    #$p($i) set packetSize_ 1000
+#    #$p($i) set burst_time_ 200ms
+#    #$p($i) set idle_time_ 200ms
+#    #$p($i) set shape_ 1.5
+#    #$p($i) set rate_ 10000K
+#    #$p($i) attach-agent $tcp($i)
+#    set start_time [$rng uniform 0 1]
+#    $ns at $start_time "$ftp($i) start"
+#    #$ns at $start_time "$p($i) start"
+#}
+#
+#for {set i $nodenum/2} {$i < $nodenum} {incr i} {
+#
+#    set tcp($i) [new Agent/TCP/Sack1]
+#    $tcp($i) set fid_ [expr ($i + 1)]
+#    set sink($i) [new Agent/TCPSink/Sack1/DelAck]
+#    $ns attach-agent $s($i) $tcp($i)
+#    $ns attach-agent $r($i) $sink($i)
+#    $ns connect $tcp($i) $sink($i)
+#    set http($i) [new Application/HTTP]
+#    $http($i) attach-agent $tcp($i)
+#    #set p($i) [new Application/Traffic/Pareto]
+#    #$p($i) set packetSize_ 1000
+#    #$p($i) set burst_time_ 200ms
+#    #$p($i) set idle_time_ 200ms
+#    #$p($i) set shape_ 1.5
+#    #$p($i) set rate_ 10000K
+#    #$p($i) attach-agent $tcp($i)
+#    set start_time [$rng uniform 0 1]
+#    $ns at $start_time "$http($i) start"
+#    #$ns at $start_time "$p($i) start"
+#}
 
 $ns at $finish_time "finish"
-
 
 proc finish {} {
     global ns sink nodenum  qfile
